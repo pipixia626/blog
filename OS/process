@@ -9,7 +9,7 @@
 
 
 ## 进程状态
-(状态转换图)[https://github.com/pipixia626/blog/blob/main/OS/sources/process_state.PNG]
+
 ### 就绪ready
 当进程已分配到除CPU以为的所有必要的资源，等待执行
 
@@ -18,3 +18,33 @@
 
 ### 阻塞 blocked
 由于发生某种事件而不能继续运行下去
+
+## PCB
+
+1:操作系统根据PCB来控制和管理并发执行的进程
+2：由操作系统进程管理模块维护
+3：常驻内存
+4：上下文切换需要保存的进程状态字
+
+### 包含的结构
+1：process state
+2: program counter
+3:CPU register
+4:CPU schedule information
+5:Memory-management information
+6:Accounting information
+7:I/O status information
+
+## 进程调度
+参考 (https://github.com/pipixia626/blog/blob/main/OS/schedule-process.md)
+
+
+## 进程间通信 IPC(Interprocess Communication)
+
+1:消息传递：数据量少的，容易实现，通过system call来传递(send,receive)
+2：共享内存：更快，system call 只能实现shared memory部分
+
+
+
+
+
