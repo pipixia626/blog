@@ -83,3 +83,13 @@
 
 ### 共享和动态链接
 分页不容易实现，分段容易实现
+
+### 二者关系
+
+1、paging是操作系统管理physical address的机制，这对用户来说是透明的，用户并不知道自己的进程是如何被paged的；而segmentation是从用户的视角（user’s view）来分割内存的机制，用户知道自己的程序是如何被分段的，而且用户可以自己决定自己的程序是如何分的段。
+
+2、paging是对内存空间（注意，分割对象是内存空间）按地址等长（注意，划分依据是地址，所以是等长的）分割，主要是为了解决contigious allocation中的external fragmentation问题，提高内存的利用率（注意，目的是充分利用内存）；而segmentation是对程序内容（注意，分割对象是程序内容）按语义（注意，划分依据是语义，所以是变长的）分割，把相似属性的数据划分开来，从而便于保护（比如代码段的内容不允许被修改）和共享（比如代码段的数据可以被共用）（注意，目的是保护和共享）。
+
+3、segmentation和paing原本都是将logical address映射到physical address的方式，两者都是noncontigious allocation的具体实现，它们原本的地位是平行的。但是，二者可以结合起来用，即“segmentation with paging”，此时，segmentation在上层，与用户打交道，paging是下层，与physical memory space打交道。一段程序，先按语义分割成各个长度不一的segments，每个segment再等长分割成长度相同的多个pages。如此一来，用户地址访问内存则需要两步查表，第一步先查segment table找到对应的segment，把logical address映射成linear address，再用linear address对page table查表，从而转化成真正的physical address。具体实现的过程与上述有点点不一样，具体实现时，第一步查找的不是简单的segment table，而是通过selector查找global descriptor table，再根据找到的表项去查page table，selector中不仅包含了segment位置相关的信息，还包含了与保护等相关的信息。
+
+4、打个比方，你现在有一整头猪肉（对应进程），要把它放进冰箱（对应物理内存）里。paging就是先把冰箱按照位置划分成一样大小的空格（对应frame），再把一整头猪肉也按空格一样大小来切碎再放进去。segmentation就是先把猪按照猪头、猪肘、内脏、里脊等等切成一块一块的，把这些块（对应segment）塞进冰箱里。而segmentation with paging就是一边把猪肉按部位切块，另一边把冰箱等空格划分，再把各个部位进行再切碎，填进每一个小格子里。
