@@ -149,10 +149,7 @@ static void free_pointer(void* usr_ptr, void* addr, bool is_array) {
 
 遍历链表，每次new时候会把这段内存插入链表，delete时候会把这段内存从链表中移出，如果程序最后链表长度不为0，即为有内存泄漏
 ```
-作者：程序喵大人
-链接：https://www.zhihu.com/question/29859828/answer/1798470821
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
 
 int checkLeaks() {
     int leak_cnt = 0;
