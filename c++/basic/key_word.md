@@ -63,7 +63,7 @@ int *const j = &i; // 指针j指向i，const修饰指针j本身，所以j的地�
 const int *k = &i; // 指针k指向i，const修饰k指向的i，所以k的地址值可以修改，但是不可以通过k修改i的值
 
 ```
-修饰指针本身的const为顶层const，修饰指针所指向变量的const为底层const
+修饰指针（j)本身的const为顶层const，修饰指针(K)所指向变量的const为底层const
 
 #### const和引用
 引用一旦初始化，就不能再修改（绑定）所以引用本身就具有const的性质（内置顶层const)
@@ -103,6 +103,65 @@ void fcn2(const int &x) { /* ... */ } // 接受const或非const的int引用，�
 void fcn2(const int *y) { /* ... */ } // 接受const或非const的int指针，但是不允许通过y修改传入的对象
 
 ```
+因此这里讨论底层const的指针/引用
+
+由于底层const描述实参性质，可以调用时区分const，所以使用底层const的指针/引用可以实现函数重载
+
+```
+void fcn3(int &x) { /* ... */ } 
+void fcn3(const int &x) { /* ... */ } // 新函数，作用于const的引用
+```
+所以可以区分这两个函数
+```
+int i = 0;
+fcn3(i); // 正确：调用第一个函数
+
+const int j = 0;
+fcn3(j); // 正确：调用第二个函数
+```
+当传递非常量对象时，编译器会优先调用非常量版本的函数
+
+
+##### 总结
+1：顶层const的形式参数不能实现函数重载，但底层const形参可以
+
+2:当函数不修改参数值时，尽可能将形式参数定义为（底层）const参数，因为（底层）const参数可以接受常量与非常量对象，
+但非（底层）const参数只能接受非常量对象。
+
+#### const和类
+
+
+##### const和类的成员变量
+一个类通常包含成员函数和成员变量，对象的const修饰表示该对象的成员变量不允许被修改：
+
+##### const和类的成员函数
+当对象声明为const时，该对象不能调用非const函数
+因为非const函数可能修改成员变量
+
+因此将成员函数声明为const则可以被const对象调用
+
+```
+class Number
+{
+public:
+    void set(int num) const { number = num; } // 错误：const函数不允许修改成员变量
+    int get() const { return number; } // 正确：函数没有修改成员变量，被声明为const函数
+
+    int number = 0;
+};
+
+int main()
+{
+    const Number n;
+    n.set(1); // 错误，const函数不允许修改成员变量
+    cout << n.get() << endl; // 正确，const对象可以调用const函数
+    return 0;
+}
+
+```
+
+
+
 ## inline
 为了解决频繁调用的小函数大量消耗栈空间的问题，从而引入了inline修饰符，表示为内联修饰符
 将任何调用函数的地方都替换成了对应函数内的表达式
