@@ -50,4 +50,4 @@
 
 ## 野指针的产生和避免
 
-
+参考  [野指针](https://github.com/pipixia626/blog/blob/main/c%2B%2B/%E6%8C%87%E9%92%88/wild_pointer.md)
