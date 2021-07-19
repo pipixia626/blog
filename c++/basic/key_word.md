@@ -73,6 +73,36 @@ const int *k = &i; // 指针k指向i，const修饰k指向的i，所以k的地址
 int i = 0;
 const int &j = i; // j为绑定到i的const引用，不允许使用j来修改i
 ```
+
+修饰本身的const都为顶层const
+
+可以将底层const的指针或引用指向/绑定到非const对象，相反却不行->const对象不允许通过任何方式被修改
+
+#### const和函数
+
+##### 值传递的const形参
+
+``
+void fcn(const int i) { /* ... */ }
+``
+
+这个函数中，变量i为值传递形参，根据值传递的初始化规则，形参i是否为const与传入的实参是否为const是完全无关的。这里的const仅表示i在函数体中不允许修改。
+
+因为值传递的const形参在调用上与非const形参没有区别，所以仅仅使用const无法区分参数类别，所以无法实现函数重载，如下的重载是错误的：
+
+```
+void fcn1(const int i) { /* ... */ }
+void fcn1(int i) { /* ... */ } // 错误：重复定义函数，不能实现重载
+```
+
+##### const指针/引用的形参
+对于顶层const的指针，其const性质与实参无关，和上一小节一样，顶层const仅表示指针/引用本身在函数体中不允许修改。
+
+```
+void fcn2(const int &x) { /* ... */ } // 接受const或非const的int引用，但是不允许通过x修改传入的对象
+void fcn2(const int *y) { /* ... */ } // 接受const或非const的int指针，但是不允许通过y修改传入的对象
+
+```
 ## inline
 为了解决频繁调用的小函数大量消耗栈空间的问题，从而引入了inline修饰符，表示为内联修饰符
 将任何调用函数的地方都替换成了对应函数内的表达式
