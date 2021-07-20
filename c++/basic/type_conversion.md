@@ -74,6 +74,7 @@ B继承A，C继承A。
 D继承B和C。
 
 ![菱形继承](https://github.com/pipixia626/blog/blob/main/c%2B%2B/image/Inheritance.png)
+
 考虑这样的情况：D对象指针能否安全的转换为A类型指针？
 
 直觉来说是可以的，因为从子类向父类转化，无论如何都是安全的。
@@ -87,11 +88,16 @@ A *pA = dynamic_cast<A *>(pB);
 ```
 
 ### const_cast
+const_cast用于移除类型的const、volatile和__unaligned属性。
 
-
+常量指针被转换成非常量指针，并且仍然指向原来的对象；常量引用被转换成非常量引用，并且仍然引用原来的对象。
+```
+const char *pc;
+char *p =const_cast<char*>(pc);
+```
 ### reinterpret_cast
 
-
+非常激进的指针类型转换，在编译期完成，可以转换任何类型的指针，所以极不安全。非极端情况不要使用。
 
 
 
