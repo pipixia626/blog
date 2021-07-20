@@ -73,7 +73,7 @@ B继承A，C继承A。
 
 D继承B和C。
 
-[菱形继承](https://github.com/pipixia626/blog/blob/main/c%2B%2B/image/Inheritance.png)
+![菱形继承](https://github.com/pipixia626/blog/blob/main/c%2B%2B/image/Inheritance.png)
 考虑这样的情况：D对象指针能否安全的转换为A类型指针？
 
 直觉来说是可以的，因为从子类向父类转化，无论如何都是安全的。
