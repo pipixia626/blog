@@ -430,3 +430,8 @@ int test_operator_new_5()
 
 
 ```
+
+
+### 为什么有了malloc，free，还需要new ,delete
+
+new 和delete 的底层实现是malloc和free,malloc只是单纯地申请一块内存，但new 不一样，c++包含面向对象的设计，当我们在new一个对象时，c++不仅要向系统申请一块内存，还要构造这个对象，调用构造函数，delete调用类的析构函数，然后归还内存

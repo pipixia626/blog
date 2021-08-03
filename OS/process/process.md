@@ -18,6 +18,17 @@
 
 ### 阻塞 blocked
 由于发生某种事件而不能继续运行下去
+### 进程结构
+由下往上
+- text :包含了进程运行的程序机器语言指令，只有只读属性，
+以防止进程通过错误指针修改自身命令，因为多个进程可以同时运行同一程序，所以文本段也可以设为共享
+
+- data :
+1. 初始化数据段 包含显示初始化的全局变量和静态变量。当程序加载到内存时，从可执行文件中读取这些变量的值。
+2. 为初始化数据段
+- heap :是可在运行时（为变量）动态进行内存分配的一块区域。堆顶端称为program break。
+
+- stack :是一个动态增长和收缩的段，有栈帧（stack frames）组成。系统会为每个当前调用的函数分配一个栈帧。栈帧中存储了函数的局部变量（所谓自动变量）、实参和返回值。
 
 ## PCB
 
@@ -25,15 +36,21 @@
 2：由操作系统进程管理模块维护
 3：常驻内存
 4：上下文切换需要保存的进程状态字
+### PCB结构模块
 
-### 包含的结构
-1：process state
-2: program counter
-3:CPU register
-4:CPU schedule information
-5:Memory-management information
+- 进程管理
+
+- 内存管理
+
+- 文件管理
+### 进程包含的结构
+1：process state 进程状态
+2: program counter  程序计数器
+3:CPU register CPU寄存器
+4:CPU schedule information CPU调度信息
+5:Memory-management information  内存管理信息
 6:Accounting information
-7:I/O status information
+7:I/O status information   I/O的状态信息
 
 ## 进程调度
 参考 (https://github.com/pipixia626/blog/blob/main/OS/schedule-process.md)
