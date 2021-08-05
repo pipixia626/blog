@@ -50,6 +50,7 @@ pure virtual 函数导致abstract classes ->不能被实体化的class ->拥有�
 
 
 ## 绝不在构造和析构过程中调用Virtual函数
+(与Java 个C#不同)
 
 ## 令operator =返回一个reference to *this
 
