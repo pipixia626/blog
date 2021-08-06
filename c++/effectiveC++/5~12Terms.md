@@ -51,9 +51,41 @@ pure virtual 函数导致abstract classes ->不能被实体化的class ->拥有�
 
 ## 绝不在构造和析构过程中调用Virtual函数
 (与Java 个C#不同)
+- 不在构造中使用:
+1. base 调用virtual函数时下降至derived class ->调用成对象内部尚未初始化的成分
+
+2. 在derived class对象的base class 构造期间
+对象的类型是base class而不是derived class ，不只virtual 函数会被编译器解析至base class，若使用运行期类型信息，也会把对象视为base class 类型
+
+- 不在析构中调用：
+1. 一旦derived class 析构函数开始执行，对象内的derived class 成员变量便呈现未定义值，所以C++视它们仿佛不存在
+2. 进入base class析构函数后对象就成为一个base class对象
+
+### 总结
+在构造和析构期间不要调用virtual函数1因为这类调用从不下降至derived class
 
 ## 令operator =返回一个reference to *this
+为了实现连锁赋值，赋值操作符必须返回一个reference指向操作符的左侧实参 
+同时适用于所有赋值相关运算(随众)
+
+### 总结
+令赋值操作符返回一个reference to *this
 
 ## 在operator 中处理“自我赋值”
+潜在的自我赋值不一定看得出来
 
-## 复制对象时勿忘真每一个成分
+证同测试->让Operator =具备"异常安全性"
+### 总结
+- 确保当对象自我赋值时operator=有良好行为，其中技术包括比较"来源对象"和"目标对象"的地址、精心周到的语句顺序，以及copy-and-swap
+- 确定任何函数如果操作一个以上的对象，而其中多个对象是同一个对象时，其行为仍然正确
+
+
+## 复制对象时勿忘记每一个成分
+
+
+- 当编写一个copying函数时，确保复制所有loacl成员变量
+- 调用所有base classes内的适当的copying函数
+
+### 总结
+1. Copying函数应该确保复制"对象内的所有成员变量"及"所有base class成分"
+2. 不要尝试以某个copying函数实现另一个copying函数，应该将共同技能放在第三个函数(init )且private的，并且由两个copying函数共同调用
