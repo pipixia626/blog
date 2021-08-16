@@ -52,5 +52,13 @@ BootS程序库的pool就是这样一个分配器(分配大量小型对象)
 有许多理由需要自写个new和delete，包括改善效能，对heap运用错误进行调试，收集heap使用信息
 
 ## 编写new 和delete时需固守常规
+operator new 实际上不止一次尝试分配内存，并且在每次失败后调用new-handling函数->也许能够做某些动作将某些内存释放出来，只有当指向new-handing函数的指针是null,operator new才会抛出bad_malloc
 
+即使是客户要求0bytes operator new 也得返回一个合法指针
+
+operator new[]动态分配的arrays可能包含额外空间用来存放元素个数 所以无法计算这个array将含有多少元素
+
+### 总结
+1. operator new 应该内含一个无穷循环，并在其中尝试分配内存，如果它无法满足内存需求，就该调用new-hanlder 它也应该有能力处理0bytes申请，class专属版本还应该处理“比正确大小更大的(错误)申请
+2. operator delete 应该在收到null 指针不做任何事，class专属版本则应该处理"比正确大小更大的(错误)申请（调用标准版的oeprator delete）
 ## 写了placement new 也要写placement delete
