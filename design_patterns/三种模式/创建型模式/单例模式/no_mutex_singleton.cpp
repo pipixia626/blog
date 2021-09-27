@@ -1,7 +1,7 @@
 //普通懒汉式的单线程
 #include <iostream> // std::cout
 #include <mutex>    // std::mutex
-#include <pthread.h> // pthread_create
+//#include <pthread.h> // pthread_create
 
 class SingleInstance
 {
@@ -69,53 +69,53 @@ SingleInstance::~SingleInstance()
 }
 ///////////////////  普通懒汉式实现 -- 线程不安全  //////////////////
 
-// 线程函数
-void *PrintHello(void *threadid)
-{
-    // 主线程与子线程分离，两者相互不干涉，子线程结束同时子线程的资源自动回收
-    pthread_detach(pthread_self());
+// // 线程函数
+// void *PrintHello(void *threadid)
+// {
+//     // 主线程与子线程分离，两者相互不干涉，子线程结束同时子线程的资源自动回收
+//     pthread_detach(pthread_self());
 
-    // 对传入的参数进行强制类型转换，由无类型指针变为整形数指针，然后再读取
-    int tid = *((int *)threadid);
+//     // 对传入的参数进行强制类型转换，由无类型指针变为整形数指针，然后再读取
+//     int tid = *((int *)threadid);
 
-    std::cout << "Hi, 我是线程 ID:[" << tid << "]" << std::endl;
+//     std::cout << "Hi, 我是线程 ID:[" << tid << "]" << std::endl;
 
-    // 打印实例地址
-    SingleInstance::GetInstance()->Print();
+//     // 打印实例地址
+//     SingleInstance::GetInstance()->Print();
 
-    pthread_exit(NULL);
-}
+//     pthread_exit(NULL);
+// }
 
-#define NUM_THREADS 5 // 线程个数
+// #define NUM_THREADS 5 // 线程个数
 
-int main(void)
-{
-    pthread_t threads[NUM_THREADS] = {0};
-    int indexes[NUM_THREADS] = {0}; // 用数组来保存i的值
+// int main(void)
+// {
+//     pthread_t threads[NUM_THREADS] = {0};
+//     int indexes[NUM_THREADS] = {0}; // 用数组来保存i的值
 
-    int ret = 0;
-    int i = 0;
+//     int ret = 0;
+//     int i = 0;
 
-    std::cout << "main() : 开始 ... " << std::endl;
+//     std::cout << "main() : 开始 ... " << std::endl;
 
-    for (i = 0; i < NUM_THREADS; i++)
-    {
-        std::cout << "main() : 创建线程:[" << i << "]" << std::endl;
+//     for (i = 0; i < NUM_THREADS; i++)
+//     {
+//         std::cout << "main() : 创建线程:[" << i << "]" << std::endl;
         
-		indexes[i] = i; //先保存i的值
+// 		indexes[i] = i; //先保存i的值
 		
-        // 传入的时候必须强制转换为void* 类型，即无类型指针
-        ret = pthread_create(&threads[i], NULL, PrintHello, (void *)&(indexes[i]));
-        if (ret)
-        {
-            std::cout << "Error:无法创建线程," << ret << std::endl;
-            exit(-1);
-        }
-    }
+//         // 传入的时候必须强制转换为void* 类型，即无类型指针
+//         ret = pthread_create(&threads[i], NULL, PrintHello, (void *)&(indexes[i]));
+//         if (ret)
+//         {
+//             std::cout << "Error:无法创建线程," << ret << std::endl;
+//             exit(-1);
+//         }
+//     }
 
-    // 手动释放单实例的资源
-    SingleInstance::deleteInstance();
-    std::cout << "main() : 结束! " << std::endl;
+//     // 手动释放单实例的资源
+//     SingleInstance::deleteInstance();
+//     std::cout << "main() : 结束! " << std::endl;
 	
-    return 0;
-}
+//     return 0;
+// }
